@@ -385,40 +385,19 @@ Features were selected using:
 *   Sprint Planning & Agile Optimization
     
 
-🛠️ Potential Tech Stack
+🛠️ Tech Stack
 ========================
 
 Frontend:
 
-*   React.js / Next.js
+*   React.js 
     
 *   Tailwind CSS
-    
-
-Backend:
-
-*   Node.js / Express
-    
-*   Spring Boot
-    
-
-Database:
-
-*   PostgreSQL / MongoDB
-    
-
-Authentication:
-
-*   JWT / OAuth2
     
 
 Deployment:
 
 *   Vercel
-    
-*   Docker
-    
-*   AWS / Render
     
 
 🌍 Real-World Impact
