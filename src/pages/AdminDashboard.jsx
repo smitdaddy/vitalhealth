@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { usePatients } from '../context/PatientContext';
 
 export default function AdminDashboard() {
