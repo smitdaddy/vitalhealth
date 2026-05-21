@@ -4,6 +4,10 @@ import { usePatients } from '../context/PatientContext';
 
 export default function PatientDetailView() {
   const { patients } = usePatients();
+  
+  // Hardcoding to Patient 1 (Liam) or 2 (Elena) for demonstration since we don't have routing params configured for this view yet.
+  const patient = patients.find(p => p.id === 3) || patients[0]; 
+
   return (
     <>
       {/*  Top Navigation Bar  */}
@@ -157,50 +161,37 @@ export default function PatientDetailView() {
 </tr>
 </thead>
 <tbody className="divide-y divide-outline-variant">
-<tr className="group hover:bg-white transition-colors">
-<td className="py-4 text-on-surface font-medium">Oct 25, 08:30 AM</td>
-<td className="py-4 text-primary font-bold">36.8°C</td>
-<td className="py-4 text-on-surface-variant">Nurse Sarah J.</td>
-<td className="py-4">
-<span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">NO</span>
-</td>
-<td className="py-4 text-right">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
-</td>
-</tr>
-<tr className="group hover:bg-white transition-colors">
-<td className="py-4 text-on-surface font-medium">Oct 24, 08:00 PM</td>
-<td className="py-4 text-primary font-bold">37.1°C</td>
-<td className="py-4 text-on-surface-variant">Nurse Kevin M.</td>
-<td className="py-4">
-<span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">NO</span>
-</td>
-<td className="py-4 text-right">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
-</td>
-</tr>
-<tr className="group hover:bg-white transition-colors">
-<td className="py-4 text-on-surface font-medium">Oct 24, 08:15 AM</td>
-<td className="py-4 text-primary font-bold">36.6°C</td>
-<td className="py-4 text-on-surface-variant">Nurse Sarah J.</td>
-<td className="py-4">
-<span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">NO</span>
-</td>
-<td className="py-4 text-right">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
-</td>
-</tr>
-<tr className="group hover:bg-white transition-colors">
-<td className="py-4 text-on-surface font-medium">Oct 23, 08:00 PM</td>
-<td className="py-4 text-error font-bold">38.4°C</td>
-<td className="py-4 text-on-surface-variant">Nurse Kevin M.</td>
-<td className="py-4">
-<span className="bg-error text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">YES</span>
-</td>
-<td className="py-4 text-right">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
-</td>
-</tr>
+{patient.readings && patient.readings.length > 0 ? (
+  patient.readings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).map((reading) => {
+      const date = new Date(reading.timestamp);
+      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      
+      return (
+        <tr key={reading.id} className="group hover:bg-white transition-colors">
+        <td className="py-4 text-on-surface font-medium">{dateStr}, {timeStr}</td>
+        <td className={`py-4 font-bold ${reading.isFever ? 'text-error' : 'text-primary'}`}>{reading.temp}</td>
+        <td className="py-4 text-on-surface-variant">
+          {reading.recordedBy} {reading.role === 'Doctor' ? '(Override)' : ''}
+        </td>
+        <td className="py-4">
+        {reading.isFever ? (
+          <span className="bg-error text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">YES</span>
+        ) : (
+          <span className="bg-secondary text-white text-[10px] px-2 py-0.5 rounded font-black uppercase">NO</span>
+        )}
+        </td>
+        <td className="py-4 text-right">
+        <button className="material-symbols-outlined text-on-surface-variant hover:text-primary">edit</button>
+        </td>
+        </tr>
+      );
+  })
+) : (
+  <tr>
+    <td colSpan="5" className="py-8 text-center text-on-surface-variant">No temperature readings found for this patient.</td>
+  </tr>
+)}
 </tbody>
 </table>
 </div>

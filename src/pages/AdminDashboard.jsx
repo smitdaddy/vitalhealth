@@ -5,6 +5,15 @@ import { usePatients } from '../context/PatientContext';
 export default function AdminDashboard() {
   const { addPatient } = usePatients();
   const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
+  const [pendingDischarges, setPendingDischarges] = useState([
+    { id: 1, initials: 'JM', name: 'Julianne Moore', caseNum: 'Case #8821-A', days: '14 Days', doctor: 'Dr. Chen' },
+    { id: 2, initials: 'ES', name: 'Ethan Sullivan', caseNum: 'Case #9012-C', days: '21 Days', doctor: 'Dr. Vance' },
+    { id: 3, initials: 'MK', name: 'Maya Kaur', caseNum: 'Case #8774-B', days: '9 Days', doctor: 'Dr. Thorne' }
+  ]);
+
+  const handleDischarge = (id) => {
+    setPendingDischarges(prev => prev.filter(patient => patient.id !== id));
+  };
   const [newPatientForm, setNewPatientForm] = useState({
       name: '',
       room: '',
@@ -167,7 +176,9 @@ export default function AdminDashboard() {
 <div className="p-6 border-b border-outline-variant flex justify-between items-center bg-white">
 <h3 className="font-headline-sm text-headline-sm text-primary">Pending Discharges</h3>
 <div className="flex gap-2">
-<span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full font-label-sm text-label-sm">4 Actions Required</span>
+<span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full font-label-sm text-label-sm">
+{pendingDischarges.length > 0 ? `${pendingDischarges.length} Actions Required` : 'No Actions Required'}
+</span>
 </div>
 </div>
 <div className="overflow-x-auto">
@@ -181,69 +192,40 @@ export default function AdminDashboard() {
 </tr>
 </thead>
 <tbody className="divide-y divide-outline-variant">
-<tr className="hover:bg-surface-container transition-colors">
+{pendingDischarges.length > 0 ? (
+pendingDischarges.map(patient => (
+<tr key={patient.id} className="hover:bg-surface-container transition-colors">
 <td className="px-6 py-5">
 <div className="flex items-center gap-3">
-<div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container">JM</div>
+<div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container">{patient.initials}</div>
 <div>
-<p className="font-label-lg text-label-lg text-on-surface">Julianne Moore</p>
-<p className="font-label-sm text-label-sm text-on-surface-variant">Case #8821-A</p>
+<p className="font-label-lg text-label-lg text-on-surface">{patient.name}</p>
+<p className="font-label-sm text-label-sm text-on-surface-variant">{patient.caseNum}</p>
 </div>
 </div>
 </td>
-<td className="px-6 py-5 font-body-md text-body-md">14 Days</td>
+<td className="px-6 py-5 font-body-md text-body-md">{patient.days}</td>
 <td className="px-6 py-5">
 <div className="flex items-center gap-2">
 <span className="material-symbols-outlined text-[18px] text-primary">medical_information</span>
-<span className="font-body-md text-body-md">Dr. Chen</span>
+<span className="font-body-md text-body-md">{patient.doctor}</span>
 </div>
 </td>
 <td className="px-6 py-5 text-right">
-<button className="bg-on-tertiary-container text-white px-5 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all shadow-sm">Confirm Discharge</button>
+<button 
+  onClick={() => handleDischarge(patient.id)}
+  className="bg-on-tertiary-container text-white px-5 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all shadow-sm"
+>
+  Confirm Discharge
+</button>
 </td>
 </tr>
-<tr className="hover:bg-surface-container transition-colors">
-<td className="px-6 py-5">
-<div className="flex items-center gap-3">
-<div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container">ES</div>
-<div>
-<p className="font-label-lg text-label-lg text-on-surface">Ethan Sullivan</p>
-<p className="font-label-sm text-label-sm text-on-surface-variant">Case #9012-C</p>
-</div>
-</div>
-</td>
-<td className="px-6 py-5 font-body-md text-body-md">21 Days</td>
-<td className="px-6 py-5">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-[18px] text-primary">medical_information</span>
-<span className="font-body-md text-body-md">Dr. Vance</span>
-</div>
-</td>
-<td className="px-6 py-5 text-right">
-<button className="bg-on-tertiary-container text-white px-5 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all shadow-sm">Confirm Discharge</button>
-</td>
+))
+) : (
+<tr>
+<td colSpan="4" className="px-6 py-8 text-center text-on-surface-variant">All pending discharges have been processed.</td>
 </tr>
-<tr className="hover:bg-surface-container transition-colors">
-<td className="px-6 py-5">
-<div className="flex items-center gap-3">
-<div className="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container">MK</div>
-<div>
-<p className="font-label-lg text-label-lg text-on-surface">Maya Kaur</p>
-<p className="font-label-sm text-label-sm text-on-surface-variant">Case #8774-B</p>
-</div>
-</div>
-</td>
-<td className="px-6 py-5 font-body-md text-body-md">9 Days</td>
-<td className="px-6 py-5">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-[18px] text-primary">medical_information</span>
-<span className="font-body-md text-body-md">Dr. Thorne</span>
-</div>
-</td>
-<td className="px-6 py-5 text-right">
-<button className="bg-on-tertiary-container text-white px-5 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all shadow-sm">Confirm Discharge</button>
-</td>
-</tr>
+)}
 </tbody>
 </table>
 </div>

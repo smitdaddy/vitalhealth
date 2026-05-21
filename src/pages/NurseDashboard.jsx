@@ -3,14 +3,31 @@ import { Link } from 'react-router-dom';
 import { usePatients } from '../context/PatientContext';
 
 export default function NurseDashboard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { patients, addPatient } = usePatients();
+  const { patients, addPatient, addReading } = usePatients();
+  
+  // Vitals Modal State
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
+  const [tempValue, setTempValue] = useState('');
+  const [tempError, setTempError] = useState('');
+  
+  // New Patient Modal State
   const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
   const [newPatientForm, setNewPatientForm] = useState({
       name: '',
       room: '',
       age: ''
   });
+
+  const handleRecordTempSubmit = () => {
+      setTempError('');
+      const result = addReading(selectedPatientId, tempValue, 'Nurse', 'Nurse Sarah');
+      if (!result.success) {
+          setTempError(result.error);
+      } else {
+          setSelectedPatientId(null);
+          setTempValue('');
+      }
+  };
 
   const handleAddPatientSubmit = () => {
       addPatient({
@@ -110,40 +127,82 @@ export default function NurseDashboard() {
 </div>
 </header>
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {patients.map(patient => (
-        <div key={patient.id} className={`bg-[#EAF4FB] rounded-xl p-6 transition-all ${patient.status === 'Pending Reading' ? 'border-2 border-primary/20 shadow-md' : 'hover:shadow-lg'}`}>
+    {patients.map(patient => {
+        const currentHour = new Date().getHours();
+        const todayStr = new Date().toDateString();
+        const todayReading = patient.readings?.find(r => new Date(r.timestamp).toDateString() === todayStr);
+        
+        const isFever = todayReading?.isFever;
+        let overdueStatus = null;
+        if (!todayReading) {
+            if (currentHour >= 18) {
+                overdueStatus = 'critical';
+            } else if (currentHour >= 14) {
+                overdueStatus = 'warning';
+            }
+        }
+
+        let cardClasses = 'bg-[#EAF4FB] hover:shadow-lg border border-transparent';
+        let statusBadge = '';
+        let statusIcon = 'monitor_heart';
+        let iconColor = 'text-primary';
+
+        if (isFever) {
+            cardClasses = 'bg-error-container border-2 border-error shadow-md';
+            statusBadge = <span className="px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit bg-error text-on-error">🚨 FEVER DETECTED</span>;
+            statusIcon = 'emergency';
+            iconColor = 'text-error';
+        } else if (overdueStatus === 'critical') {
+            cardClasses = 'bg-[#FFF3E0] border-2 border-[#FFB74D] shadow-md';
+            statusBadge = <span className="px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit bg-[#E65100] text-white">⚠️ CRITICAL: OVERDUE</span>;
+            statusIcon = 'warning';
+            iconColor = 'text-[#E65100]';
+        } else if (overdueStatus === 'warning') {
+            cardClasses = 'bg-[#FFF8E1] border-2 border-[#FFE082] shadow-sm';
+            statusBadge = <span className="px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit bg-[#FFB300] text-[#FFF8E1]">⏳ WARNING: OVERDUE</span>;
+            statusIcon = 'schedule';
+            iconColor = 'text-[#FFB300]';
+        } else if (!todayReading) {
+            cardClasses = 'bg-[#EAF4FB] border-2 border-primary/20 shadow-sm';
+            statusBadge = <span className="px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit bg-error-container text-on-error-container">⚠️ Pending Reading</span>;
+            statusIcon = 'emergency_home';
+            iconColor = 'text-error';
+        } else {
+            statusBadge = <span className="px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit bg-on-tertiary-container/10 text-on-tertiary-container">✅ Temp Recorded</span>;
+        }
+
+        return (
+        <div key={patient.id} className={`rounded-xl p-6 transition-all ${cardClasses}`}>
             <div className="flex justify-between items-start mb-4">
                 <div>
-                    <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase mb-2 block w-fit ${patient.status === 'Pending Reading' ? 'bg-error-container text-on-error-container' : 'bg-on-tertiary-container/10 text-on-tertiary-container'}`}>
-                        {patient.status === 'Pending Reading' ? '⚠️ Pending Reading' : (patient.status === 'New Patient' ? '🆕 New Patient' : '✅ Temp Recorded')}
-                    </span>
+                    {statusBadge}
                     <h2 className="font-headline-sm text-headline-sm text-primary">{patient.name}</h2>
                     <p className="text-on-surface-variant font-body-md text-body-md">Room {patient.room} | Age: {patient.age}</p>
                 </div>
                 <div className="bg-white/50 p-2 rounded-lg">
-                    <span className={`material-symbols-outlined ${patient.status === 'Pending Reading' ? 'text-error' : 'text-primary'}`} data-icon="monitor_heart">
-                        {patient.status === 'Pending Reading' ? 'emergency_home' : 'monitor_heart'}
+                    <span className={`material-symbols-outlined ${iconColor}`} data-icon={statusIcon}>
+                        {statusIcon}
                     </span>
                 </div>
             </div>
             
             <div className="space-y-3">
-                {patient.status === 'Pending Reading' ? (
+                {!todayReading ? (
                     <div className="bg-white/60 p-4 rounded-lg">
-                        <p className="text-sm text-on-surface-variant mb-3">Temperature check overdue by <span className="font-bold text-error">{patient.overdue || '10 mins'}</span></p>
-                        <button className="w-full bg-primary text-on-primary py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" onClick={() => setIsModalOpen(true)}>
+                        {overdueStatus === 'critical' && <p className="text-sm font-bold text-[#E65100] mb-3">Reading overdue since 18:00!</p>}
+                        {overdueStatus === 'warning' && <p className="text-sm font-bold text-[#FFB300] mb-3">Reading overdue since 14:00!</p>}
+                        {!overdueStatus && <p className="text-sm text-on-surface-variant mb-3">Temperature check required today.</p>}
+                        <button className="w-full bg-primary text-on-primary py-3 rounded-full font-bold flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all" onClick={() => setSelectedPatientId(patient.id)}>
                             <span className="material-symbols-outlined text-[20px]" data-icon="device_thermostat">device_thermostat</span>
                             Record Temp
                         </button>
                     </div>
                 ) : (
                     <>
-                        {patient.lastReading && (
-                            <div className="flex justify-between text-sm py-2 border-b border-primary/10">
-                                <span className="text-on-surface-variant">Last Reading:</span>
-                                <span className="font-bold text-primary">{patient.lastReading}</span>
-                            </div>
-                        )}
+                        <div className="flex justify-between text-sm py-2 border-b border-primary/10">
+                            <span className="text-on-surface-variant">Today's Temp:</span>
+                            <span className={`font-bold ${isFever ? 'text-error' : 'text-primary'}`}>{todayReading.temp}</span>
+                        </div>
                         {patient.heartRate && (
                             <div className="flex justify-between text-sm py-2 border-b border-primary/10">
                                 <span className="text-on-surface-variant">Heart Rate:</span>
@@ -156,11 +215,16 @@ export default function NurseDashboard() {
                                 <span className="font-bold text-primary">{patient.bloodOxygen}</span>
                             </div>
                         )}
+                        <button className="w-full mt-2 bg-surface text-primary py-2 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-surface-container active:scale-95 transition-all" onClick={() => setSelectedPatientId(patient.id)}>
+                            <span className="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
+                            Update Temp
+                        </button>
                     </>
                 )}
             </div>
         </div>
-    ))}
+        );
+    })}
 </div>
 {/*  Dashboard Analytics Bento Section  */}
 <div className="grid grid-cols-4 gap-6 h-64">
@@ -192,39 +256,44 @@ export default function NurseDashboard() {
 </section>
 </main>
 {/*  Modal Backdrop  */}
-{isModalOpen && (
+{selectedPatientId && (
 <div className="fixed inset-0 bg-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" id="modalOverlay">
 <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
 <div className="bg-primary p-6 flex justify-between items-center text-on-primary">
 <div>
-<h3 className="font-headline-sm text-headline-sm">Enter Vital Vitals</h3>
-<p className="text-primary-fixed text-sm opacity-80" id="modalPatientInfo">Patient: Elena Rodriguez | Room 105</p>
+<h3 className="font-headline-sm text-headline-sm">Enter Patient Vitals</h3>
+<p className="text-primary-fixed text-sm opacity-80" id="modalPatientInfo">
+  Patient: {patients.find(p => p.id === selectedPatientId)?.name} | Room {patients.find(p => p.id === selectedPatientId)?.room}
+</p>
 </div>
-<button className="hover:bg-white/10 rounded-full p-1" onClick={() => setIsModalOpen(false)}>
+<button className="hover:bg-white/10 rounded-full p-1" onClick={() => { setSelectedPatientId(null); setTempError(''); setTempValue(''); }}>
 <span className="material-symbols-outlined" data-icon="close">close</span>
 </button>
 </div>
 <div className="p-8 space-y-6">
+{tempError && (
+  <div className="bg-error-container text-on-error-container p-3 rounded-lg text-sm flex items-start gap-2">
+    <span className="material-symbols-outlined text-[18px]">error</span>
+    <span>{tempError}</span>
+  </div>
+)}
 <div className="space-y-2">
 <label className="font-label-lg text-label-lg text-on-surface-variant">Temperature (°C)</label>
 <div className="relative">
-<input className="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl py-4 px-6 text-2xl font-bold text-primary" placeholder="36.5" step="0.1" type="number"/>
+<input 
+  className="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl py-4 px-6 text-2xl font-bold text-primary" 
+  placeholder="36.5" 
+  step="0.1" 
+  type="number"
+  value={tempValue}
+  onChange={(e) => setTempValue(e.target.value)}
+/>
 <span className="absolute right-6 top-1/2 -translate-y-1/2 font-bold text-on-surface-variant">°C</span>
 </div>
 </div>
-<div className="grid grid-cols-2 gap-4">
-<div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant flex flex-col items-center gap-1 cursor-pointer hover:bg-secondary-container transition-colors">
-<span className="material-symbols-outlined text-primary" data-icon="sentiment_satisfied">sentiment_satisfied</span>
-<span className="text-xs font-bold uppercase">Normal</span>
-</div>
-<div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant flex flex-col items-center gap-1 cursor-pointer hover:bg-error-container transition-colors">
-<span className="material-symbols-outlined text-error" data-icon="sentiment_very_dissatisfied">sentiment_very_dissatisfied</span>
-<span className="text-xs font-bold uppercase text-error">Febrile</span>
-</div>
-</div>
 <div className="flex gap-4 pt-2">
-<button className="flex-1 py-4 font-bold text-on-surface-variant hover:bg-surface-container rounded-full transition-all" onClick={() => setIsModalOpen(false)}>Cancel</button>
-<button className="flex-1 py-4 bg-primary text-on-primary font-bold rounded-full shadow-lg hover:shadow-primary/20 active:scale-95 transition-all" onClick={() => setIsModalOpen(false)}>Save Entry</button>
+<button className="flex-1 py-4 font-bold text-on-surface-variant hover:bg-surface-container rounded-full transition-all" onClick={() => { setSelectedPatientId(null); setTempError(''); setTempValue(''); }}>Cancel</button>
+<button className="flex-1 py-4 bg-primary text-on-primary font-bold rounded-full shadow-lg hover:shadow-primary/20 active:scale-95 transition-all" onClick={handleRecordTempSubmit}>Save Entry</button>
 </div>
 </div>
 </div>
