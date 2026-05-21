@@ -7,6 +7,8 @@ import PatientDetailView from './pages/PatientDetailView';
 import NurseLogin from './pages/NurseLogin';
 import DoctorLogin from './pages/DoctorLogin';
 import AdminLogin from './pages/AdminLogin';
+import LogisticsManagement from './pages/LogisticsManagement';
+import FacilityMap from './pages/FacilityMap';
 import { PatientProvider } from './context/PatientContext';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
             <Route path="/doctor" element={<DoctorDashboard />} />
             <Route path="/nurse" element={<NurseDashboard />} />
             <Route path="/patient" element={<PatientDetailView />} />
+            <Route path="/logistics" element={<LogisticsManagement />} />
+            <Route path="/facility-map" element={<FacilityMap />} />
           </Routes>
         </div>
       </PatientProvider>

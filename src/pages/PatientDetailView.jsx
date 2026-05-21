@@ -18,8 +18,8 @@ export default function PatientDetailView() {
 <nav className="hidden md:flex gap-6">
 <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/doctor">Dashboard</Link>
 <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
-<a className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" href="/">Facility Map</a>
-<a className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" href="/">Logistics</a>
+<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
+<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
 </nav>
 </div>
 <div className="flex items-center gap-4">

@@ -43,8 +43,8 @@ export default function AdminDashboard() {
 <nav className="hidden md:flex items-center gap-6">
 <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/admin">Dashboard</Link>
 <Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
-<a className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" href="/">Facility Map</a>
-<a className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" href="/">Logistics</a>
+<Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
+<Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
 </nav>
 </div>
 <div className="flex items-center gap-4">
@@ -275,14 +275,14 @@ pendingDischarges.map(patient => (
 <span className="material-symbols-outlined">groups</span>
 <span className="font-label-sm text-[10px]">Patients</span>
 </button>
-<button className="flex flex-col items-center gap-1 text-on-surface-variant">
+<Link to="/facility-map" className="flex flex-col items-center gap-1 text-on-surface-variant">
 <span className="material-symbols-outlined">map</span>
 <span className="font-label-sm text-[10px]">Map</span>
-</button>
-<button className="flex flex-col items-center gap-1 text-on-surface-variant">
+</Link>
+<Link to="/logistics" className="flex flex-col items-center gap-1 text-on-surface-variant">
 <span className="material-symbols-outlined">inventory_2</span>
 <span className="font-label-sm text-[10px]">Logistics</span>
-</button>
+</Link>
 </nav>
 {isAddPatientModalOpen && (
 <div className="fixed inset-0 bg-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">

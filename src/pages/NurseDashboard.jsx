@@ -49,8 +49,8 @@ export default function NurseDashboard() {
 <div className="hidden md:flex gap-6 items-center">
 <Link className="text-primary dark:text-tertiary-fixed font-bold border-b-2 border-primary dark:border-tertiary-fixed pb-1 font-label-lg text-label-lg" to="/nurse">Dashboard</Link>
 <Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/patient">Patient List</Link>
-<a className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" href="/">Facility Map</a>
-<a className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" href="/">Logistics</a>
+<Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/facility-map">Facility Map</Link>
+<Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/logistics">Logistics</Link>
 </div>
 </div>
 <div className="flex items-center gap-4">
