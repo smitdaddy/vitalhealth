@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { getActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
 
@@ -11,11 +12,64 @@ export default function TriageIntake() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const triageQueue = [
+  const [triageQueue, setTriageQueue] = useState([
     { id: 1, name: 'Mateo Ricci', code: '#VW-9800', arrival: '14:22', temp: '38.9°C', risk: 'Critical', riskClass: 'bg-error-container text-on-error-container', nurse: 'N. Chen', status: 'Assessed' },
     { id: 2, name: 'Sarah Jenkins', code: '#VW-9801', arrival: '14:45', temp: '37.8°C', risk: 'High', riskClass: 'bg-surface-container-highest text-primary', nurse: 'T. Miller', status: 'Awaiting' },
     { id: 3, name: 'Elena Vargas', code: '#VW-9802', arrival: '15:05', temp: '36.6°C', risk: 'Low', riskClass: 'bg-tertiary-fixed text-on-tertiary-fixed-variant', nurse: 'N. Chen', status: 'Assessment Complete' },
-  ];
+  ]);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    age: '',
+    gender: 'Male',
+    temp: '',
+    symptoms: '',
+    risk: 'Low'
+  });
+
+  const [currentTime, setCurrentTime] = useState(() => {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  });
+
+  const getRiskClass = (risk) => {
+    switch(risk) {
+      case 'Critical': return 'bg-error-container text-on-error-container';
+      case 'High': return 'bg-surface-container-highest text-primary';
+      case 'Medium': return 'bg-secondary-container text-on-secondary-container';
+      case 'Low': return 'bg-tertiary-fixed text-on-tertiary-fixed-variant';
+      default: return 'bg-surface-container text-secondary';
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name.trim()) return;
+
+    const newPatient = {
+      id: Date.now(),
+      name: formData.name,
+      code: `#VW-${Math.floor(1000 + Math.random() * 9000)}`,
+      arrival: currentTime,
+      temp: formData.temp ? `${formData.temp}°C` : 'N/A',
+      risk: formData.risk,
+      riskClass: getRiskClass(formData.risk),
+      nurse: 'Unassigned',
+      status: 'Awaiting'
+    };
+
+    setTriageQueue(prev => [newPatient, ...prev]);
+    setFormData({ name: '', age: '', gender: 'Male', temp: '', symptoms: '', risk: 'Low' });
+    
+    // Update current time for the next potential entry
+    const now = new Date();
+    setCurrentTime(`${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`);
+  };
 
   const handleAssign = (patient) => {
     setSelectedPatient(patient);
@@ -25,27 +79,18 @@ export default function TriageIntake() {
   return (
     <div className="font-body-md text-on-surface min-h-screen bg-surface">
       {/* Top App Bar */}
-      <header className="bg-surface border-b border-surface-container-highest fixed z-40 w-full top-0">
-        <div className="flex justify-between items-center w-full px-margin-desktop h-16 max-w-container-max mx-auto">
-          <div className="flex items-center gap-4">
-            <BrandLogo />
-          </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg" to={dashboardPath}>Dashboard</Link>
-            <Link className="text-primary border-b-2 border-primary font-bold pb-1 font-label-lg" to="/patient">Patient List</Link>
-            <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg" to="/facility-map">Facility Map</Link>
-            <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg" to="/logistics">Logistics</Link>
-          </nav>
-          <div className="flex items-center gap-4">
+      <TopNavbar
+        rightContent={
+          <>
             <button className="p-2 hover:bg-surface-container-low rounded-full transition-colors">
               <span className="material-symbols-outlined text-secondary">notifications</span>
             </button>
             <button className="p-2 hover:bg-surface-container-low rounded-full transition-colors">
               <span className="material-symbols-outlined text-secondary">account_circle</span>
             </button>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <div className="flex pt-16 min-h-screen">
         {/* Sidebar */}
@@ -129,19 +174,19 @@ export default function TriageIntake() {
             <div className="space-y-gutter">
               <div className="bg-surface-container-lowest rounded-xl shadow-sm p-6 border border-surface-container-highest">
                 <h3 className="font-headline-sm text-headline-sm text-primary mb-6">New Patient Intake</h3>
-                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label className="block text-label-sm text-secondary mb-1">Full Name</label>
-                    <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="John Doe" type="text" />
+                    <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="John Doe" type="text" name="name" value={formData.name} onChange={handleInputChange} required />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-label-sm text-secondary mb-1">Age</label>
-                      <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="45" type="number" />
+                      <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="45" type="number" name="age" value={formData.age} onChange={handleInputChange} />
                     </div>
                     <div>
                       <label className="block text-label-sm text-secondary mb-1">Gender</label>
-                      <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
+                      <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" name="gender" value={formData.gender} onChange={handleInputChange}>
                         <option>Male</option>
                         <option>Female</option>
                         <option>Other</option>
@@ -150,19 +195,19 @@ export default function TriageIntake() {
                   </div>
                   <div>
                     <label className="block text-label-sm text-secondary mb-1">Arrival Time</label>
-                    <input className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-secondary outline-none" readOnly type="text" value="15:42" />
+                    <input className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-secondary outline-none" readOnly type="text" value={currentTime} />
                   </div>
                   <div>
                     <label className="block text-label-sm text-secondary mb-1">Initial Temperature (°C)</label>
-                    <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="37.5" type="text" />
+                    <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="37.5" type="text" name="temp" value={formData.temp} onChange={handleInputChange} />
                   </div>
                   <div>
                     <label className="block text-label-sm text-secondary mb-1">Symptoms</label>
-                    <textarea className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="Fever, cough, shortness of breath..." rows="3"></textarea>
+                    <textarea className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="Fever, cough, shortness of breath..." rows="3" name="symptoms" value={formData.symptoms} onChange={handleInputChange}></textarea>
                   </div>
                   <div>
                     <label className="block text-label-sm text-secondary mb-1">Risk Assessment</label>
-                    <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
+                    <select className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" name="risk" value={formData.risk} onChange={handleInputChange}>
                       <option>Low</option>
                       <option>Medium</option>
                       <option>High</option>

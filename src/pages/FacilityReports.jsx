@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { getActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
 
@@ -26,27 +27,17 @@ export default function FacilityReports() {
       {/* Main Content */}
       <div className="flex-grow flex flex-col">
         {/* Top Nav */}
-        <header className="bg-surface shadow-sm border-b border-outline-variant sticky top-0 z-50">
-          <div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-            <div className="flex items-center gap-8">
-              <BrandLogo />
-              <nav className="hidden md:flex gap-6 items-center">
-                <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors" to={dashboardPath}>Dashboard</Link>
-                <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors" to="/patient">Patient List</Link>
-                <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors" to="/facility-map">Facility Map</Link>
-                <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors" to="/logistics">Logistics</Link>
-                <Link className="text-primary font-bold border-b-2 border-primary pb-1" to="/reports">Reports</Link>
-              </nav>
-            </div>
-            <div className="flex items-center gap-4">
+        <TopNavbar
+          rightContent={
+            <>
               <button className="material-symbols-outlined text-on-surface-variant hover:text-primary">notifications</button>
               <button className="material-symbols-outlined text-on-surface-variant hover:text-primary">settings</button>
               <button className="bg-error text-white px-4 py-2 rounded-full font-label-lg text-label-lg flex items-center gap-2 hover:bg-red-700 transition-all">
                 <span className="material-symbols-outlined">emergency</span> Emergency Alert
               </button>
-            </div>
-          </div>
-        </header>
+            </>
+          }
+        />
 
         {/* Page Content */}
         <main className="flex-grow p-margin-desktop max-w-container-max mx-auto w-full">

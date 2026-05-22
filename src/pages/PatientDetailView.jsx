@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { usePatients } from '../context/PatientContext';
 import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
@@ -15,28 +16,17 @@ export default function PatientDetailView() {
   return (
     <>
       {/*  Top Navigation Bar  */}
-<header className="bg-surface border-b border-outline-variant fixed top-0 w-full z-50">
-<div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-<div className="flex items-center gap-8">
-<BrandLogo />
-<nav className="hidden md:flex gap-6">
-<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to={dashboardPath}>Dashboard</Link>
-<Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
-<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
-{showLogistics && (
-<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
-)}
-</nav>
-</div>
-<div className="flex items-center gap-4">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
-<div className="h-10 w-10 rounded-full overflow-hidden bg-primary-fixed flex items-center justify-center">
-<img alt="Medical Officer Profile" className="w-full h-full object-cover" data-alt="A professional close-up portrait of a medical officer in a clean clinical setting. The doctor is wearing a white lab coat and a stethoscope around their neck. The lighting is soft and neutral, emphasizing a professional and trustworthy demeanor. The background is a slightly blurred hospital hallway with a clean, light blue and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBV8hAN3qzuwoVvpa8UFvnm-ghQbFz_Hp7xvWZtw2gwp_HsuDemZtIqxDflkVFWjbPZ3nrsSRlWP28dQO3LtQBBHRb8Fr2tQlk4smzLj1qi14grPnidAv75cT6jOQzcDhaDTRqywsUuVOPmf64f14TZ0iIWqPO1wyuwNsV1sdFe8DFJMUFFk66BJ_oFFECKVgR18o0Kp4wfvXAbn4kYGblwwVN3AE44ZoLN6KauCgQHQoUtQZgtclgkLHukenHQ6sEIogd_CyuI74"/>
-</div>
-</div>
-</div>
-</header>
+<TopNavbar
+  rightContent={
+    <>
+      <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+      <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+      <div className="h-10 w-10 rounded-full overflow-hidden bg-primary-fixed flex items-center justify-center">
+        <img alt="Medical Officer Profile" className="w-full h-full object-cover" data-alt="A professional close-up portrait of a medical officer in a clean clinical setting. The doctor is wearing a white lab coat and a stethoscope around their neck. The lighting is soft and neutral, emphasizing a professional and trustworthy demeanor. The background is a slightly blurred hospital hallway with a clean, light blue and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBV8hAN3qzuwoVvpa8UFvnm-ghQbFz_Hp7xvWZtw2gwp_HsuDemZtIqxDflkVFWjbPZ3nrsSRlWP28dQO3LtQBBHRb8Fr2tQlk4smzLj1qi14grPnidAv75cT6jOQzcDhaDTRqywsUuVOPmf64f14TZ0iIWqPO1wyuwNsV1sdFe8DFJMUFFk66BJ_oFFECKVgR18o0Kp4wfvXAbn4kYGblwwVN3AE44ZoLN6KauCgQHQoUtQZgtclgkLHukenHQ6sEIogd_CyuI74"/>
+      </div>
+    </>
+  }
+/>
 <div className="flex pt-20 h-screen">
 {/*  Side Navigation  */}
 <aside className="hidden md:flex flex-col h-full p-base space-y-2 border-r border-outline-variant bg-surface-container-low w-64 fixed left-0 top-20">

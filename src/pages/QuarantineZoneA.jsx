@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { getActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
 
@@ -37,18 +38,9 @@ export default function QuarantineZoneA() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         {/* Top Nav */}
-        <header className="bg-surface shadow-sm border-b border-outline-variant z-40 sticky top-0">
-          <div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-            <div className="flex items-center gap-8">
-              <BrandLogo />
-              <nav className="hidden lg:flex items-center gap-6">
-                <Link className="font-label-lg text-label-lg text-on-surface-variant pb-1 hover:text-primary transition-colors" to={dashboardPath}>Dashboard</Link>
-                <Link className="font-label-lg text-label-lg text-primary font-bold border-b-2 border-primary pb-1" to="/patient">Patient List</Link>
-                <Link className="font-label-lg text-label-lg text-on-surface-variant pb-1 hover:text-primary transition-colors" to="/facility-map">Facility Map</Link>
-                <Link className="font-label-lg text-label-lg text-on-surface-variant pb-1 hover:text-primary transition-colors" to="/logistics">Logistics</Link>
-              </nav>
-            </div>
-            <div className="flex items-center gap-4">
+        <TopNavbar
+          rightContent={
+            <>
               <button className="bg-error text-on-error font-label-lg px-4 py-2 rounded-full hover:opacity-90 transition-opacity">Emergency Alert</button>
               <button className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative">
                 <span className="material-symbols-outlined">notifications</span>
@@ -57,9 +49,9 @@ export default function QuarantineZoneA() {
               <button className="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors">
                 <span className="material-symbols-outlined">settings</span>
               </button>
-            </div>
-          </div>
-        </header>
+            </>
+          }
+        />
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto bg-surface-bright px-margin-mobile md:px-margin-desktop py-8">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { usePatients } from '../context/PatientContext';
 import { setActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
@@ -39,36 +40,27 @@ export default function AdminDashboard() {
   return (
     <>
       {/*  Top Navigation Shell  */}
-<header className="bg-surface shadow-sm border-b border-outline-variant sticky top-0 z-50">
-<div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-<div className="flex items-center gap-8">
-<BrandLogo />
-<nav className="hidden md:flex items-center gap-6">
-<Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/admin">Dashboard</Link>
-<Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
-<Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
-<Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
-</nav>
-</div>
-<div className="flex items-center gap-4">
-<button className="bg-error text-on-error px-6 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all flex items-center gap-2">
-<span className="material-symbols-outlined text-[20px]">notifications_active</span>
-                    Emergency Alert
-                </button>
-<div className="flex items-center gap-2 border-l border-outline-variant pl-4">
-<button className="text-on-surface-variant hover:text-primary p-2">
-<span className="material-symbols-outlined">notifications</span>
-</button>
-<button className="text-on-surface-variant hover:text-primary p-2">
-<span className="material-symbols-outlined">settings</span>
-</button>
-<div className="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden ml-2 cursor-pointer">
-<img alt="Medical Officer Profile" className="w-full h-full object-cover" data-alt="A professional medical headshot of a facility supervisor in a high-stakes clinical environment. The doctor has a confident and focused expression, wearing a sterile navy blue scrub top and a stethoscope around their neck. The background is a clean, out-of-focus medical ward with cool blue and white lighting, emphasizing a modern and highly organized healthcare setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8yjwCW2cpKAMEH4w86LMVjqzSxguNmQImULT1T5hUvPmKl6RWClr6hrXF17XP4eWLpMRSd1jLlgpcoe2kPn3m8scausv7f-VF0YK9G3InkWy79h3uJk8KB9FG669WhF0DCd8-sUOoD1VbxdmPBrV4nfCFK5qLKYCs6JB08GW0OZscT0e7X_j7tQ0aFZQ6T8yRLhXL8WamFmAASYYLxSr_g0D5n7Lf9tVY4-MQ3PhMgi8zNvQLMeOguYu9IMb1QBtX1dwkqmiO8bo"/>
-</div>
-</div>
-</div>
-</div>
-</header>
+<TopNavbar 
+  rightContent={
+    <>
+      <button className="bg-error text-on-error px-6 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all flex items-center gap-2">
+        <span className="material-symbols-outlined text-[20px]">notifications_active</span>
+        Emergency Alert
+      </button>
+      <div className="flex items-center gap-2 border-l border-outline-variant pl-4">
+        <button className="text-on-surface-variant hover:text-primary p-2">
+          <span className="material-symbols-outlined">notifications</span>
+        </button>
+        <button className="text-on-surface-variant hover:text-primary p-2">
+          <span className="material-symbols-outlined">settings</span>
+        </button>
+        <div className="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden ml-2 cursor-pointer">
+          <img alt="Medical Officer Profile" className="w-full h-full object-cover" data-alt="A professional medical headshot of a facility supervisor in a high-stakes clinical environment. The doctor has a confident and focused expression, wearing a sterile navy blue scrub top and a stethoscope around their neck. The background is a clean, out-of-focus medical ward with cool blue and white lighting, emphasizing a modern and highly organized healthcare setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8yjwCW2cpKAMEH4w86LMVjqzSxguNmQImULT1T5hUvPmKl6RWClr6hrXF17XP4eWLpMRSd1jLlgpcoe2kPn3m8scausv7f-VF0YK9G3InkWy79h3uJk8KB9FG669WhF0DCd8-sUOoD1VbxdmPBrV4nfCFK5qLKYCs6JB08GW0OZscT0e7X_j7tQ0aFZQ6T8yRLhXL8WamFmAASYYLxSr_g0D5n7Lf9tVY4-MQ3PhMgi8zNvQLMeOguYu9IMb1QBtX1dwkqmiO8bo"/>
+        </div>
+      </div>
+    </>
+  } 
+/>
 <div className="flex max-w-container-max mx-auto">
 {/*  Sidebar Shell  */}
 <Sidebar className="hidden lg:flex w-64 h-[calc(100vh-80px)] sticky top-[80px]" onNewEntry={() => setIsAddPatientModalOpen(true)} />

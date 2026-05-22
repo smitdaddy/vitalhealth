@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { getActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
 
@@ -52,25 +53,18 @@ export default function IsolationUnitB() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Top App Bar */}
-        <header className="bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop py-4 shadow-sm z-10">
-          <div className="flex items-center gap-8">
-            <h1 className="font-headline-lg text-headline-lg font-bold text-primary">Isolation Unit B</h1>
-            <nav className="hidden lg:flex gap-6">
-              <Link className="text-on-surface-variant hover:text-primary font-label-lg pb-1 transition-all" to={dashboardPath}>Dashboard</Link>
-              <Link className="text-on-surface-variant hover:text-primary font-label-lg pb-1 transition-all" to="/patient">Patient List</Link>
-              <Link className="text-primary font-bold border-b-2 border-primary pb-1" to="/facility-map">Facility Map</Link>
-              <Link className="text-on-surface-variant hover:text-primary font-label-lg pb-1 transition-all" to="/logistics">Logistics</Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="bg-error text-on-error px-4 py-2 rounded-full font-label-lg hover:opacity-90 active:scale-95 transition-all flex items-center gap-2 shadow-sm">
-              <span className="material-symbols-outlined text-sm">warning</span> Emergency Alert
-            </button>
-            <div className="h-8 w-px bg-outline-variant mx-2"></div>
-            <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
-            <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
-          </div>
-        </header>
+        <TopNavbar
+          rightContent={
+            <>
+              <button className="bg-error text-on-error px-4 py-2 rounded-full font-label-lg hover:opacity-90 active:scale-95 transition-all flex items-center gap-2 shadow-sm">
+                <span className="material-symbols-outlined text-sm">warning</span> Emergency Alert
+              </button>
+              <div className="h-8 w-px bg-outline-variant mx-2"></div>
+              <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+              <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
+            </>
+          }
+        />
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-margin-desktop space-y-gutter" style={{ background: 'radial-gradient(circle at 50% 0%, rgba(186, 26, 26, 0.08) 0%, rgba(249, 249, 249, 0) 70%)' }}>

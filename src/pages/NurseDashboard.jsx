@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { usePatients } from '../context/PatientContext';
 import { setActiveRole } from '../utils/roleNavigation';
 import Sidebar from '../components/Sidebar';
@@ -48,33 +49,27 @@ export default function NurseDashboard() {
 
   return (
     <>
-      <nav className="bg-surface dark:bg-primary shadow-sm border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto sticky top-0 z-50">
-<div className="flex items-center gap-8">
-<BrandLogo textClassName="font-headline-lg text-headline-lg font-bold text-primary dark:text-tertiary-fixed" />
-<div className="hidden md:flex gap-6 items-center">
-<Link className="text-primary dark:text-tertiary-fixed font-bold border-b-2 border-primary dark:border-tertiary-fixed pb-1 font-label-lg text-label-lg" to="/nurse">Dashboard</Link>
-<Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/patient">Patient List</Link>
-<Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/facility-map">Facility Map</Link>
-</div>
-</div>
-<div className="flex items-center gap-4">
-<div className="flex flex-col items-end mr-4">
-<span className="font-label-lg text-label-lg text-primary font-bold">Sarah Johnson</span>
-<span className="text-[10px] text-on-surface-variant uppercase tracking-widest">Nurse | Oct 24, 2023</span>
-</div>
-<div className="flex items-center gap-2">
-<button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-all">
-<span className="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-all">
-<span className="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-<button className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all">
-                    Emergency Alert
-                </button>
-</div>
-</div>
-</nav>
+      <TopNavbar
+  rightContent={
+    <div className="flex items-center gap-4">
+      <div className="flex flex-col items-end mr-4">
+        <span className="font-label-lg text-label-lg text-primary font-bold">Sarah Johnson</span>
+        <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">Nurse | Oct 24, 2023</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-all">
+          <span className="material-symbols-outlined" data-icon="notifications">notifications</span>
+        </button>
+        <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-all">
+          <span className="material-symbols-outlined" data-icon="settings">settings</span>
+        </button>
+        <button className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all">
+          Emergency Alert
+        </button>
+      </div>
+    </div>
+  }
+/>
 <main className="max-w-container-max mx-auto px-margin-desktop py-8 grid grid-cols-12 gap-gutter">
 <aside className="col-span-3 hidden md:block">
 <Sidebar className="w-full rounded-xl border border-outline-variant h-full" onNewEntry={() => setIsAddPatientModalOpen(true)} />

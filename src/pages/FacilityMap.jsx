@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import facilityMap from '../assets/facility-map.png';
 import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
@@ -10,24 +11,13 @@ export default function FacilityMap() {
 
   return (
     <>
-      <header className="bg-surface border-b border-outline-variant sticky top-0 z-50">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-          <div className="flex items-center gap-8">
-            <BrandLogo />
-            <nav className="hidden md:flex gap-6 items-center">
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to={dashboardPath}>Dashboard</Link>
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/patient">Patient List</Link>
-              <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
-              {showLogistics && (
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
-              )}
-            </nav>
-          </div>
+      <TopNavbar
+        rightContent={
           <button className="bg-error text-on-error px-4 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all">
             Emergency Alert
           </button>
-        </div>
-      </header>
+        }
+      />
 
       <main className="max-w-container-max mx-auto px-margin-mobile md:px-margin-tablet lg:px-margin-desktop py-8 space-y-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

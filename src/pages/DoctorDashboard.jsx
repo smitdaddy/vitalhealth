@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import { usePatients } from '../context/PatientContext';
 import { setActiveRole } from '../utils/roleNavigation';
 
@@ -34,32 +35,24 @@ export default function DoctorDashboard() {
 
   return (
     <>
-<header className="bg-surface border-b border-outline-variant sticky top-0 z-50">
-<div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-<div className="flex items-center gap-6">
-<BrandLogo />
-<div className="hidden md:flex gap-8 items-center">
-<Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg transition-all" to="/doctor">Dashboard</Link>
-<Link className="text-on-surface-variant pb-1 font-label-lg text-label-lg hover:text-primary transition-colors duration-200" to="/patient">Patient List</Link>
-<Link className="text-on-surface-variant pb-1 font-label-lg text-label-lg hover:text-primary transition-colors duration-200" to="/facility-map">Facility Map</Link>
-</div>
-</div>
-<div className="flex items-center gap-6">
-<div className="hidden lg:flex flex-col items-end">
-<span className="font-label-lg text-label-lg text-primary">Dr. Marcus Vance</span>
-<span className="text-xs text-on-surface-variant">Oct 24, 2023 | Senior Officer</span>
-</div>
-<div className="flex items-center gap-4">
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
-<button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
-<div className="h-10 w-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
-<img alt="Medical Officer Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcPipcEd8OkSj2Ue2Bwo0RjqlMeoohccWjfo_xgfSOjfrNeKPavbujRmHC-2ITxEYHNo0XPPTNyt8wM2Z17ETG_NTcoWCAcPlT0YkDBvzZ8lSyF6xy6gIJRS-yJBLaqXZwTE7aZ_nUjz-g1-wqxeDoa87uxK6UqBYzq2ElJlraKDKHdZYI_JdOueo2W_hJxnYZnK13EJ71ycHy4KHBLgk4uUbgwrxncz9-tnZJf5oM_MCpPzPHA4rDCteJQhSLYhOnSotVP8yuLm0"/>
-</div>
-<button className="hidden md:block bg-error text-on-error px-4 py-2 rounded-full font-label-lg text-label-lg shadow-sm hover:opacity-90 active:scale-95 transition-all">Emergency Alert</button>
-</div>
-</div>
-</div>
-</header>
+<TopNavbar
+  rightContent={
+    <div className="flex items-center gap-6">
+      <div className="hidden lg:flex flex-col items-end">
+        <span className="font-label-lg text-label-lg text-primary">Dr. Marcus Vance</span>
+        <span className="text-xs text-on-surface-variant">Oct 24, 2023 | Senior Officer</span>
+      </div>
+      <div className="flex items-center gap-4">
+        <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+        <button className="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+        <div className="h-10 w-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+          <img alt="Medical Officer Profile" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcPipcEd8OkSj2Ue2Bwo0RjqlMeoohccWjfo_xgfSOjfrNeKPavbujRmHC-2ITxEYHNo0XPPTNyt8wM2Z17ETG_NTcoWCAcPlT0YkDBvzZ8lSyF6xy6gIJRS-yJBLaqXZwTE7aZ_nUjz-g1-wqxeDoa87uxK6UqBYzq2ElJlraKDKHdZYI_JdOueo2W_hJxnYZnK13EJ71ycHy4KHBLgk4uUbgwrxncz9-tnZJf5oM_MCpPzPHA4rDCteJQhSLYhOnSotVP8yuLm0"/>
+        </div>
+        <button className="hidden md:block bg-error text-on-error px-4 py-2 rounded-full font-label-lg text-label-lg shadow-sm hover:opacity-90 active:scale-95 transition-all">Emergency Alert</button>
+      </div>
+    </div>
+  }
+/>
 <main className="max-w-container-max mx-auto px-margin-desktop py-8">
 <div className="mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
 <div>

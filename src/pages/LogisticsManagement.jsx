@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
+import TopNavbar from '../components/TopNavbar';
 import facilityMap from '../assets/facility-map.png';
 import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
@@ -14,27 +15,18 @@ export default function LogisticsManagement() {
   return (
     <>
       {/* TopAppBar Shell */}
-      <header className="fixed top-0 left-0 right-0 z-40 bg-surface border-b border-surface-container-highest h-16 flex items-center">
-        <div className="flex justify-between items-center w-full px-margin-desktop h-16 max-w-container-max mx-auto">
-          <div className="flex items-center gap-8">
-            <BrandLogo imageClassName="w-9 h-9" textClassName="font-headline-md text-headline-md font-bold text-primary" />
-            <nav className="hidden md:flex gap-6 items-center h-16">
-              <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to={dashboardPath}>Dashboard</Link>
-              <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to="/patient">Patient List</Link>
-              <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to="/facility-map">Facility Map</Link>
-              <Link className="text-primary border-b-2 border-primary font-bold pb-1 font-label-lg" to="/logistics">Logistics</Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
+      <TopNavbar
+        rightContent={
+          <>
             <div className="relative hidden sm:block">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
               <input className="bg-surface-container-low border border-outline-variant rounded-full pl-10 pr-4 py-1.5 text-label-lg w-64 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search facilities..." type="text" />
             </div>
             <button className="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
             <button className="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">account_circle</button>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       {/* SideNavBar Shell */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-64 bg-surface-container-low py-base gap-base z-30 pt-20 shadow-sm">
