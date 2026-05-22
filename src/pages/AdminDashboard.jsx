@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
 import { setActiveRole } from '../utils/roleNavigation';
+import Sidebar from '../components/Sidebar';
+
 
 export default function AdminDashboard() {
   const { addPatient } = usePatients();
@@ -69,48 +71,7 @@ export default function AdminDashboard() {
 </header>
 <div className="flex max-w-container-max mx-auto">
 {/*  Sidebar Shell  */}
-<aside className="hidden lg:flex flex-col w-64 bg-surface-container-low h-[calc(100vh-80px)] p-base space-y-2 border-r border-outline-variant sticky top-[80px]">
-<div className="px-4 py-6">
-<h3 className="font-headline-sm text-headline-sm font-black text-primary">Dr. Aris Thorne</h3>
-<p className="font-body-md text-body-md text-on-surface-variant">Facility Supervisor - Zone 4</p>
-</div>
-<nav className="flex-grow space-y-1">
-<a className="bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 flex items-center gap-3 transition-transform active:scale-95" href="/">
-<span className="material-symbols-outlined filled-icon" style={{ fontVariationSettings: "'FILL' 1" }}>dashboard</span>
-<span className="font-label-lg text-label-lg">Overview</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">security</span>
-<span className="font-label-lg text-label-lg">Quarantine Zone A</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">emergency</span>
-<span className="font-label-lg text-label-lg">Isolation Unit B</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">medical_services</span>
-<span className="font-label-lg text-label-lg">Triage</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">analytics</span>
-<span className="font-label-lg text-label-lg">Reports</span>
-</a>
-</nav>
-<button className="mx-4 my-6 bg-primary text-on-primary py-3 rounded-full flex items-center justify-center gap-2 font-label-lg text-label-lg shadow-sm hover:opacity-90 transition-all" onClick={() => setIsAddPatientModalOpen(true)}>
-<span className="material-symbols-outlined">add</span>
-                New Entry
-            </button>
-<div className="border-t border-outline-variant pt-4 space-y-1">
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">help</span>
-<span className="font-label-lg text-label-lg">Help Center</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined">settings</span>
-<span className="font-label-lg text-label-lg">Settings</span>
-</a>
-</div>
-</aside>
+<Sidebar className="hidden lg:flex w-64 h-[calc(100vh-80px)] sticky top-[80px]" onNewEntry={() => setIsAddPatientModalOpen(true)} />
 {/*  Main Content Canvas  */}
 <main className="flex-grow p-gutter md:p-margin-desktop space-y-gutter">
 {/*  Summary Tiles (Bento Grid Style)  */}

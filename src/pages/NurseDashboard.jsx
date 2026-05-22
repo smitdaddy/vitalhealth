@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
 import { setActiveRole } from '../utils/roleNavigation';
+import Sidebar from '../components/Sidebar';
+
 
 export default function NurseDashboard() {
   const { patients, addPatient, addReading } = usePatients();
@@ -74,46 +76,8 @@ export default function NurseDashboard() {
 </div>
 </nav>
 <main className="max-w-container-max mx-auto px-margin-desktop py-8 grid grid-cols-12 gap-gutter">
-<aside className="col-span-3">
-<div className="bg-surface-container-low rounded-xl p-6 space-y-4 border border-outline-variant">
-<div className="flex items-center gap-3 pb-4 border-b border-outline-variant">
-<div className="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
-<span className="material-symbols-outlined text-primary-fixed" data-icon="person">person</span>
-</div>
-<div>
-<h3 className="font-headline-sm text-headline-sm text-primary">Dr. Aris Thorne</h3>
-<p className="font-body-md text-body-md text-on-surface-variant">Facility Supervisor</p>
-</div>
-</div>
-<nav className="space-y-1">
-<a className="bg-secondary-container text-on-secondary-container rounded-lg px-4 py-3 flex items-center gap-3 transition-transform active:scale-95" href="/">
-<span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span className="font-label-lg text-label-lg">Overview</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined" data-icon="security">security</span>
-<span className="font-label-lg text-label-lg">Quarantine Zone A</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined" data-icon="emergency">emergency</span>
-<span className="font-label-lg text-label-lg">Isolation Unit B</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined" data-icon="medical_services">medical_services</span>
-<span className="font-label-lg text-label-lg">Triage</span>
-</a>
-<a className="text-on-surface-variant hover:bg-surface-container-high px-4 py-3 flex items-center gap-3 rounded-lg transition-colors" href="/">
-<span className="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span className="font-label-lg text-label-lg">Reports</span>
-</a>
-</nav>
-<div className="pt-4">
-<button className="w-full bg-primary-container text-primary-fixed py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90" onClick={() => setIsAddPatientModalOpen(true)}>
-<span className="material-symbols-outlined" data-icon="add">add</span>
-                        New Entry
-                    </button>
-</div>
-</div>
+<aside className="col-span-3 hidden md:block">
+<Sidebar className="w-full rounded-xl border border-outline-variant h-full" onNewEntry={() => setIsAddPatientModalOpen(true)} />
 </aside>
 <section className="col-span-9 space-y-8">
 <header className="flex justify-between items-end">

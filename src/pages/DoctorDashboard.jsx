@@ -6,7 +6,7 @@ import { setActiveRole } from '../utils/roleNavigation';
 
 export default function DoctorDashboard() {
   const [activeTab, setActiveTab] = useState('ready');
-  const { patients, addReading } = usePatients();
+  const { patients, addReading, markVisited } = usePatients();
 
   useEffect(() => {
     setActiveRole('doctor');
@@ -127,10 +127,17 @@ export default function DoctorDashboard() {
                     <span className="text-xs font-medium ml-auto bg-white px-2 py-1 rounded-md">By {todayReading.recordedBy}</span>
                 </div>
                 <div className="space-y-3">
-                    <button className="w-full bg-[#00a656] text-white py-3 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-sm">done_all</span>
-                        Mark as Visited
-                    </button>
+                    {patient.visitedAt && new Date(patient.visitedAt).toDateString() === todayStr ? (
+                        <button disabled className="w-full bg-gray-300 text-gray-500 py-3 rounded-full font-label-lg text-label-lg flex items-center justify-center gap-2 cursor-not-allowed">
+                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                            Visited ✓
+                        </button>
+                    ) : (
+                        <button onClick={() => markVisited(patient.id)} className="w-full bg-[#00a656] text-white py-3 rounded-full font-label-lg text-label-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-sm">done_all</span>
+                            Mark as Visited
+                        </button>
+                    )}
                 </div>
             </div>
         );

@@ -84,8 +84,19 @@ export const PatientProvider = ({ children }) => {
         return { success: true, reading: newReading };
     };
 
+    const markVisited = (patientId) => {
+        setPatients(prev => prev.map(p => {
+            if (p.id !== patientId) return p;
+            return {
+                ...p,
+                visitedAt: new Date().toISOString(),
+                visitedBy: 'Dr. Vance'
+            };
+        }));
+    };
+
     return (
-        <PatientContext.Provider value={{ patients, addPatient, addReading }}>
+        <PatientContext.Provider value={{ patients, addPatient, addReading, markVisited }}>
             {children}
         </PatientContext.Provider>
     );

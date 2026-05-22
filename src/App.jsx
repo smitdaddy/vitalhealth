@@ -9,6 +9,10 @@ import DoctorLogin from './pages/DoctorLogin';
 import AdminLogin from './pages/AdminLogin';
 import LogisticsManagement from './pages/LogisticsManagement';
 import FacilityMap from './pages/FacilityMap';
+import QuarantineZoneA from './pages/QuarantineZoneA';
+import IsolationUnitB from './pages/IsolationUnitB';
+import TriageIntake from './pages/TriageIntake';
+import FacilityReports from './pages/FacilityReports';
 import { PatientProvider } from './context/PatientContext';
 
 function App() {
@@ -27,6 +31,10 @@ function App() {
             <Route path="/patient" element={<PatientDetailView />} />
             <Route path="/logistics" element={<LogisticsManagement />} />
             <Route path="/facility-map" element={<FacilityMap />} />
+            <Route path="/quarantine-zone-a" element={<QuarantineZoneA />} />
+            <Route path="/isolation-unit-b" element={<IsolationUnitB />} />
+            <Route path="/triage" element={<TriageIntake />} />
+            <Route path="/reports" element={<FacilityReports />} />
           </Routes>
         </div>
       </PatientProvider>
