@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
+import { setActiveRole } from '../utils/roleNavigation';
 
 export default function NurseDashboard() {
   const { patients, addPatient, addReading } = usePatients();
+
+  useEffect(() => {
+    setActiveRole('nurse');
+  }, []);
   
   // Vitals Modal State
   const [selectedPatientId, setSelectedPatientId] = useState(null);
@@ -42,15 +48,11 @@ export default function NurseDashboard() {
     <>
       <nav className="bg-surface dark:bg-primary shadow-sm border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto sticky top-0 z-50">
 <div className="flex items-center gap-8">
-<div className="flex items-center gap-2">
-<img alt="VitalWatch Logo" className="w-10 h-10" data-alt="A clean, medical-grade logo icon featuring a stylized heartbeat line and a protective shield in professional navy blue and medical green. The style is modern, clinical, and corporate, set against a sterile white background with soft ambient studio lighting for a high-tech healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsP_fv_FyoHt3Unc_bppFLFQvEsJe5oOB0ShgixNM6h3rVNeqmqpEn0hoo4ko1nhWB9g2VpZ_l1jncAg1Xu6XbO0tgX68CQEvXIKJ8-90sMmv_F0977OL8leHac-L_f8Et74wwsUVAB_jkni8dB-vY4xpJxmAzUi6yVYQq_yjCI6kJVRvlCKeFqPuL67pwUgF_xKQTqQqzeKvtCASgioH6vFy3euIJ0qfdS0FiEZc2cK-3ExbBLjtrFYdcRGAKKIp781u9JEQcaFc"/>
-<span className="font-headline-lg text-headline-lg font-bold text-primary dark:text-tertiary-fixed">VitalWatch</span>
-</div>
+<BrandLogo textClassName="font-headline-lg text-headline-lg font-bold text-primary dark:text-tertiary-fixed" />
 <div className="hidden md:flex gap-6 items-center">
 <Link className="text-primary dark:text-tertiary-fixed font-bold border-b-2 border-primary dark:border-tertiary-fixed pb-1 font-label-lg text-label-lg" to="/nurse">Dashboard</Link>
 <Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/patient">Patient List</Link>
 <Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/facility-map">Facility Map</Link>
-<Link className="text-on-surface-variant dark:text-on-primary-container pb-1 font-label-lg text-label-lg hover:text-primary dark:hover:text-tertiary-fixed transition-colors duration-200" to="/logistics">Logistics</Link>
 </div>
 </div>
 <div className="flex items-center gap-4">

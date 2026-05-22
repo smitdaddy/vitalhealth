@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { VITALWATCH_LOGO_URL } from '../components/BrandLogo';
 
 export default function LoginRoleSelection() {
   return (
@@ -13,7 +14,7 @@ export default function LoginRoleSelection() {
 {/*  Brand Identity Section  */}
 <header className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
 <div className="mb-6 inline-block">
-<img alt="VitalWatch Logo" className="w-32 md:w-48 h-auto drop-shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTQDPLBpLFquY9HhgTedS4YuFCszN8qOqkdgI5hOt6d67zyor83aHuV-VvJML_PiF0EEHQnIUp0xwmQ20oxa9YofNkQh4Yde9L8Cux2kpHBDOV_iV4iiQbx5HlnujqMZpJRXhg-7BjCIJr-fnHntC9B-PE8bBOHrGRUEWHdeVc79oOXbmNZRSXwfrPrlMxnoQlt_lYgmeXSVxrP7F02DDdeZT5W9JgM525_ujTXZNDIN5XNnFYb93CjDaFbEJ4r4YAceh9wW24rb8"/>
+<img alt="VitalWatch Logo" className="w-32 md:w-48 h-auto drop-shadow-sm" src={VITALWATCH_LOGO_URL}/>
 </div>
 <h1 className="font-headline-lg text-headline-lg md:text-[40px] text-primary mb-2 tracking-tight">
                 VitalWatch

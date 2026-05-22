@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
+import { setActiveRole } from '../utils/roleNavigation';
 
 export default function DoctorDashboard() {
   const [activeTab, setActiveTab] = useState('ready');
   const { patients, addReading } = usePatients();
+
+  useEffect(() => {
+    setActiveRole('doctor');
+  }, []);
 
   // Vitals Modal State
   const [selectedPatientId, setSelectedPatientId] = useState(null);
@@ -31,14 +37,11 @@ export default function DoctorDashboard() {
 <header className="bg-surface border-b border-outline-variant sticky top-0 z-50">
 <div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
 <div className="flex items-center gap-6">
-<div className="flex items-center gap-2">
-<span className="font-headline-lg text-headline-lg font-bold text-primary">VitalWatch</span>
-</div>
+<BrandLogo />
 <div className="hidden md:flex gap-8 items-center">
 <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg transition-all" to="/doctor">Dashboard</Link>
 <Link className="text-on-surface-variant pb-1 font-label-lg text-label-lg hover:text-primary transition-colors duration-200" to="/patient">Patient List</Link>
 <Link className="text-on-surface-variant pb-1 font-label-lg text-label-lg hover:text-primary transition-colors duration-200" to="/facility-map">Facility Map</Link>
-<Link className="text-on-surface-variant pb-1 font-label-lg text-label-lg hover:text-primary transition-colors duration-200" to="/logistics">Logistics</Link>
 </div>
 </div>
 <div className="flex items-center gap-6">

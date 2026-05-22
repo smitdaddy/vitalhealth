@@ -1,20 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import facilityMap from '../assets/facility-map.png';
+import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
 export default function FacilityMap() {
+  const dashboardPath = getDashboardPath();
+  const showLogistics = canAccessLogistics();
+
   return (
     <>
       <header className="bg-surface border-b border-outline-variant sticky top-0 z-50">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
           <div className="flex items-center gap-8">
-            <span className="font-headline-lg text-headline-lg font-bold text-primary">VitalWatch</span>
+            <BrandLogo />
             <nav className="hidden md:flex gap-6 items-center">
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/admin">Admin</Link>
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/doctor">Doctor</Link>
-              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/nurse">Nurse</Link>
+              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to={dashboardPath}>Dashboard</Link>
+              <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/patient">Patient List</Link>
               <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
+              {showLogistics && (
               <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
+              )}
             </nav>
           </div>
           <button className="bg-error text-on-error px-4 py-2 rounded-full font-label-lg text-label-lg hover:opacity-90 transition-all">

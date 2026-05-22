@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
+import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
 export default function PatientDetailView() {
   const { patients } = usePatients();
+  const dashboardPath = getDashboardPath();
+  const showLogistics = canAccessLogistics();
   
   // Hardcoding to Patient 1 (Liam) or 2 (Elena) for demonstration since we don't have routing params configured for this view yet.
   const patient = patients.find(p => p.id === 3) || patients[0]; 
@@ -14,12 +18,14 @@ export default function PatientDetailView() {
 <header className="bg-surface border-b border-outline-variant fixed top-0 w-full z-50">
 <div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
 <div className="flex items-center gap-8">
-<span className="font-headline-lg text-headline-lg font-bold text-primary">VitalWatch</span>
+<BrandLogo />
 <nav className="hidden md:flex gap-6">
-<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/doctor">Dashboard</Link>
+<Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to={dashboardPath}>Dashboard</Link>
 <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
 <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/facility-map">Facility Map</Link>
+{showLogistics && (
 <Link className="text-on-surface-variant pb-1 hover:text-primary transition-colors duration-200 font-label-lg text-label-lg" to="/logistics">Logistics</Link>
+)}
 </nav>
 </div>
 <div className="flex items-center gap-4">

@@ -1,17 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import facilityMap from '../assets/facility-map.png';
+import { canAccessLogistics, getDashboardPath } from '../utils/roleNavigation';
 
 export default function LogisticsManagement() {
+  const dashboardPath = getDashboardPath();
+
+  if (!canAccessLogistics()) {
+    return <Navigate to={dashboardPath} replace />;
+  }
+
   return (
     <>
       {/* TopAppBar Shell */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-surface border-b border-surface-container-highest h-16 flex items-center">
         <div className="flex justify-between items-center w-full px-margin-desktop h-16 max-w-container-max mx-auto">
           <div className="flex items-center gap-8">
-            <span className="font-headline-md text-headline-md font-bold text-primary">VitalWatch</span>
+            <BrandLogo imageClassName="w-9 h-9" textClassName="font-headline-md text-headline-md font-bold text-primary" />
             <nav className="hidden md:flex gap-6 items-center h-16">
-              <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to="/admin">Dashboard</Link>
+              <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to={dashboardPath}>Dashboard</Link>
               <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to="/patient">Patient List</Link>
               <Link className="text-secondary hover:text-primary transition-colors duration-200 font-label-lg py-2" to="/facility-map">Facility Map</Link>
               <Link className="text-primary border-b-2 border-primary font-bold pb-1 font-label-lg" to="/logistics">Logistics</Link>
@@ -35,7 +43,7 @@ export default function LogisticsManagement() {
           <p className="text-secondary font-label-sm">Facility Lead</p>
         </div>
         <nav className="flex-1 space-y-1">
-          <Link className="text-secondary px-4 py-3 mx-2 flex items-center gap-3 hover:bg-surface-container-high rounded-full transition-all" to="/admin">
+          <Link className="text-secondary px-4 py-3 mx-2 flex items-center gap-3 hover:bg-surface-container-high rounded-full transition-all" to={dashboardPath}>
             <span className="material-symbols-outlined">dashboard</span>
             <span className="font-label-lg">Dashboard</span>
           </Link>
@@ -321,7 +329,7 @@ export default function LogisticsManagement() {
 
       {/* BottomNavBar Shell (Mobile) */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex lg:hidden justify-around items-center px-4 py-2 bg-surface border-t border-surface-container-highest shadow-[0_-4px_12px_rgba(13,43,69,0.08)]">
-        <Link to="/admin" className="flex flex-col items-center justify-center text-secondary">
+        <Link to={dashboardPath} className="flex flex-col items-center justify-center text-secondary">
           <span className="material-symbols-outlined">dashboard</span>
           <span className="font-label-sm">Dash</span>
         </Link>

@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import BrandLogo from '../components/BrandLogo';
 import { usePatients } from '../context/PatientContext';
+import { setActiveRole } from '../utils/roleNavigation';
 
 export default function AdminDashboard() {
   const { addPatient } = usePatients();
+
+  useEffect(() => {
+    setActiveRole('admin');
+  }, []);
   const [isAddPatientModalOpen, setIsAddPatientModalOpen] = useState(false);
   const [pendingDischarges, setPendingDischarges] = useState([
     { id: 1, initials: 'JM', name: 'Julianne Moore', caseNum: 'Case #8821-A', days: '14 Days', doctor: 'Dr. Chen' },
@@ -34,12 +40,7 @@ export default function AdminDashboard() {
 <header className="bg-surface shadow-sm border-b border-outline-variant sticky top-0 z-50">
 <div className="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
 <div className="flex items-center gap-8">
-<div className="flex items-center gap-2">
-<div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center overflow-hidden">
-<img alt="VitalWatch Logo" className="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI8MO_8Sc_lNPP7qG51xBrcvX5VMBwqlMChpD9Sln8lUBWy9JEwkPoK-ylGOf9FmKP96j-OjluzBWovl7wFFxmClGJdIWbmUyGul4qvzkwXizQ5wk5mv2a2bny6OoMvsS2NcsXxCG1O4H3CyNv8AZTCECkbuNwr-GJ0jcQL2K0r17zvOOs6-j4OxVbNowEbLvTse9Uvba_nNmdySa-UZPOOa-u6Ps6rBgq2nPxrVuEq3vxfDJvCiKTYmY5tmNVqtCQeNiuVmYFsX0"/>
-</div>
-<span className="font-headline-lg text-headline-lg font-bold text-primary">VitalWatch</span>
-</div>
+<BrandLogo />
 <nav className="hidden md:flex items-center gap-6">
 <Link className="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" to="/admin">Dashboard</Link>
 <Link className="text-on-surface-variant hover:text-primary transition-colors pb-1 font-label-lg text-label-lg" to="/patient">Patient List</Link>
